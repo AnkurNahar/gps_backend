@@ -1,12 +1,16 @@
 package main
 
 import( 
-	"fmt"
+	"log"
+	"net/http"
+	"github.com/gorilla/mux"
 	handlers "gps_backend/handlers"
 )
 
 func main() {
-	response, err := handlers.GetDevicesHandler()
+    router := mux.NewRouter()
+	router.HandleFunc("/devices", handlers.GetDevicesHandler).Methods("GET")
 
-    fmt.Println(response)
+	log.Println("Server is running on port 8080")
+	log.Fatal(http.ListenAndServe(":8080", router))
 }
