@@ -31,9 +31,9 @@ func GetPreferences(userID string) (models.Preferences, error) {
 	if err == redis.Nil {
 		//default preferences
 		return models.Preferences{
-			SortBy:       "name",
-			HiddenDeviceIds:   []string{},
-			UserDeviceIcons: map[string]string{},
+			SortBy:       		"name",
+			HiddenDeviceIds:	[]string{},
+			UserDeviceIcons:	map[string]string{},
 		}, nil
 	} else if err != nil {
 		return models.Preferences{}, err

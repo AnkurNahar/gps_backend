@@ -1,7 +1,7 @@
 package models
 
 type Device struct {
-    DeviceID   string  `json:"device_id"`
+    DeviceID    string  `json:"device_id"`
     DisplayName string  `json:"display_name"`
     ActiveState string  `json:"active_state"`
     Lat         float64 `json:"lat"`
