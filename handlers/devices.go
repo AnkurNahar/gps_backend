@@ -3,13 +3,14 @@ package handlers
 import (
 	"encoding/json"
 	"net/http"
+	
 	utils "gps_backend/utils"
 	models "gps_backend/models"
 )
 
 var apiKey = "4wEeK_l4KkSmK9Oil3KxrKJfI_ZqCGKmVhVBMnUFD30"
 
-func GetDevicesHandler(w http.ResponseWriter, r *http.Request) {
+func GetDevices(w http.ResponseWriter, r *http.Request) {
 	devices, err := utils.FetchDevices(apiKey)
 	if err != nil {
 		http.Error(w, "Failed to fetch devices", http.StatusInternalServerError)

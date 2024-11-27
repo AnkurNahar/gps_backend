@@ -3,12 +3,19 @@ package handlers
 import (
 	"encoding/json"
 	"net/http"
+	
 	storage "gps_backend/storage"
 	models "gps_backend/models"
-)
+	middleware "gps_backend/middleware"
+) 
 
-func GetPreferencesHandler(w http.ResponseWriter, r *http.Request) {
-	userID := r.Header.Get("User-ID")
+func GetPreferences(w http.ResponseWriter, r *http.Request) {
+	userID, ok := r.Context().Value(middleware.UserIDKey).(string)
+	if !ok {
+		http.Error(w, "User ID not found in token", http.StatusUnauthorized)
+		return
+	}
+
 	if userID == "" {
 		http.Error(w, "User-ID header is missing", http.StatusBadRequest)
 		return
@@ -23,8 +30,13 @@ func GetPreferencesHandler(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(preferences)
 }
 
-func UpdatePreferencesHandler(w http.ResponseWriter, r *http.Request) {
-	userID := r.Header.Get("User-ID") 
+func UpdatePreferences(w http.ResponseWriter, r *http.Request) {
+	userID, ok := r.Context().Value(middleware.UserIDKey).(string)
+	if !ok {
+		http.Error(w, "User ID not found in token", http.StatusUnauthorized)
+		return
+	}
+
 	if userID == "" {
 		http.Error(w, "User-ID header is missing", http.StatusBadRequest)
 		return
@@ -42,5 +54,7 @@ func UpdatePreferencesHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	w.WriteHeader(http.StatusOK)
+	status := "success"
+
+	json.NewEncoder(w).Encode(status)
 }
