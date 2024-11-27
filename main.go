@@ -2,7 +2,7 @@ package main
 
 import( 
 	"fmt"
-	"gps-backend/handlers"
+	handlers "gps_backend/handlers"
 )
 
 func main() {
