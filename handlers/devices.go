@@ -5,7 +5,6 @@ import (
 	"net/http"
 	utils "gps_backend/utils"
 	models "gps_backend/models"
-	//storage "gps_backend/storage"
 )
 
 var apiKey = "4wEeK_l4KkSmK9Oil3KxrKJfI_ZqCGKmVhVBMnUFD30"
