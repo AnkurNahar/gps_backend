@@ -17,10 +17,10 @@ func GetDevices(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	var response []models.Device
+	var data []models.Device
 	for _, device := range devices {
 		latestPoint := device["latest_device_point"].(map[string]interface{})
-		response = append(response, models.Device{
+		data = append(data, models.Device{
 			DeviceID:   device["device_id"].(string),
 			DisplayName: device["display_name"].(string),
 			ActiveState: device["active_state"].(string),
@@ -31,5 +31,11 @@ func GetDevices(w http.ResponseWriter, r *http.Request) {
 		})
 	}
 
+	response := models.Response{
+		Status:  "success",
+		Data: data,
+	}
+
 	json.NewEncoder(w).Encode(response)
+
 }

@@ -17,7 +17,7 @@ func GetPreferences(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if userID == "" {
-		http.Error(w, "User-ID header is missing", http.StatusBadRequest)
+		http.Error(w, "UserID missing", http.StatusBadRequest)
 		return
 	}
 
@@ -27,7 +27,12 @@ func GetPreferences(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	json.NewEncoder(w).Encode(preferences)
+	response := models.Response{
+		Status: "success",
+		Data: preferences,
+	}
+
+	json.NewEncoder(w).Encode(response)
 }
 
 func UpdatePreferences(w http.ResponseWriter, r *http.Request) {
@@ -38,7 +43,7 @@ func UpdatePreferences(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if userID == "" {
-		http.Error(w, "User-ID header is missing", http.StatusBadRequest)
+		http.Error(w, "UserID missing", http.StatusBadRequest)
 		return
 	}
 
@@ -54,7 +59,9 @@ func UpdatePreferences(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	status := "success"
+	response := models.Response{
+		Status: "success",
+	}
 
-	json.NewEncoder(w).Encode(status)
+	json.NewEncoder(w).Encode(response)
 }

@@ -5,7 +5,6 @@ import(
 	"net/http"
 	"github.com/gorilla/mux"
 
-	utils "gps_backend/utils"
 	middleware "gps_backend/middleware"
 	storage "gps_backend/storage"
 	handlers "gps_backend/handlers"
@@ -16,16 +15,7 @@ func main() {
 	
     router := mux.NewRouter()
 
-	router.HandleFunc("/login", func(w http.ResponseWriter, r *http.Request) {
-		userID := r.Header.Get("UserID")
-		token, err := utils.GenerateJWT(userID)
-		if err != nil {
-			http.Error(w, "Failed to generate token", http.StatusInternalServerError)
-			return
-		}
-
-		w.Write([]byte(token))
-	}).Methods("GET")
+	router.HandleFunc("/login", handlers.Login).Methods("GET")
 
 
 	// Protected routes
