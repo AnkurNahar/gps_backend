@@ -11,12 +11,11 @@ import(
 )
 
 func main() {
-	storage.InitRedis()
-	
+	storage.InitRedis()	
     router := mux.NewRouter()
 
+	// Routes
 	router.HandleFunc("/login", controllers.Login).Methods("GET")
-
 
 	// Protected routes
 	protected := router.PathPrefix("/").Subrouter()
