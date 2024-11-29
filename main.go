@@ -4,6 +4,7 @@ import(
 	"log"
 	"net/http"
 	"github.com/gorilla/mux"
+	"github.com/rs/cors"
 
 	middleware "gps_backend/middleware"
 	storage "gps_backend/storage"
@@ -24,6 +25,16 @@ func main() {
 	protected.HandleFunc("/preferences", controllers.GetPreferences).Methods("GET")
 	protected.HandleFunc("/preferences", controllers.UpdatePreferences).Methods("POST")
 
+	// CORS Middleware
+	corsHandler := cors.New(cors.Options{
+		AllowedOrigins:   []string{"http://localhost:3000"}, // Allow your frontend's origin
+		AllowedMethods:   []string{"GET", "POST", "OPTIONS"},
+		AllowedHeaders:   []string{"Authorization", "Content-Type"},
+		AllowCredentials: true,
+	})
+
+	handler := corsHandler.Handler(router)
+
 	log.Println("Server is running on port 8080")
-	log.Fatal(http.ListenAndServe(":8080", router))
+	log.Fatal(http.ListenAndServe(":8080", handler))
 }
