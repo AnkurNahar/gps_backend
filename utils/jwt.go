@@ -3,7 +3,8 @@ package utils
 import (
 	//"time"
 	"errors"
-	"github.com/golang-jwt/jwt/v5"
+	jwt "github.com/golang-jwt/jwt/v5"
+	"log"
 )
 
 var secretKey = []byte("thisIsOurSecret!Shhhhh")
@@ -15,7 +16,13 @@ func GenerateJWT(userID string) (string, error) {
 	}
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-	return token.SignedString(secretKey)
+	signedToken, err := token.SignedString(secretKey)
+	if err != nil {
+		log.Println("Error generating token:", err)
+		return "", err
+	}
+	//log.Println(signedToken)
+	return signedToken, nil
 }
 
 

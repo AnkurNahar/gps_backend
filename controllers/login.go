@@ -16,8 +16,8 @@ func Login(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	data := map[string][]byte{
-		"Authentication Token":  []byte(token),
+	data := map[string]string{
+		"authToken":  token,
 	}
 
 	response := models.Response{
