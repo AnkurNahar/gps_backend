@@ -1,5 +1,3 @@
-Here’s a well-documented `README.md` file for your backend setup instructions! 🎉
-
 ```markdown
 # Go Backend Setup Guide 🚀
 
@@ -61,7 +59,12 @@ sudo systemctl start redis
 sudo systemctl enable redis
 ```
 
-Verify Redis is running:
+alternatively run redis temporarily:
+```bash
+redis-server
+```
+
+Verify Redis is running (required):
 ```bash
 redis-cli ping
 # Output: PONG
@@ -162,15 +165,4 @@ go build -o app
   ```
 - Always restart the Redis server if changes are made to its configuration.
 
----
-
-## 💡 Need Help?
-
-If you encounter any issues or have questions, feel free to open an issue in this repository or reach out to the maintainer.
-
----
-
-**Happy Coding!** 💻✨
 ```
-
-This `README.md` includes detailed setup instructions for all operating systems, troubleshooting steps, and even optional Docker usage. Let me know if you want to customize it further! 🚀
