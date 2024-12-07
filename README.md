@@ -30,8 +30,8 @@ Before running this project, ensure you have the following installed:
 ### 1️⃣ Clone the Repository
 
 ```bash
-git clone https://github.com/your-username/your-repository.git
-cd your-repository
+git clone https://github.com/etherbiswas/gps_backend_go
+cd gps_backend_go
 ```
 
 ---
