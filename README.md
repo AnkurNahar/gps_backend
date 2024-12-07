@@ -1,4 +1,3 @@
-```markdown
 # Go Backend Setup Guide 🚀
 
 This guide will walk you through setting up and running the Go backend project on **Windows**, **macOS**, and **Linux**.
@@ -163,6 +162,5 @@ go build -o app
       DB:       0,                // Use the appropriate DB index
   })
   ```
+  
 - Always restart the Redis server if changes are made to its configuration.
-
-```
