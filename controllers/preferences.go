@@ -9,7 +9,7 @@ import (
 	middleware "gps_backend/middleware"
 ) 
 
-func GetPreferences(w http.ResponseWriter, r *http.Request) {
+func GetPreferences(w http.ResponseWriter, r *http.Request, preferencesStorage *storage.RedisStorage) {
 	userID, ok := r.Context().Value(middleware.UserIDKey).(string)
 	if !ok {
 		http.Error(w, "User ID not found in token", http.StatusUnauthorized)
@@ -21,7 +21,7 @@ func GetPreferences(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	preferences, err := storage.GetPreferences(userID)
+	preferences, err := preferencesStorage.GetPreferences(userID)
 	if err != nil {
 		http.Error(w, "Failed to get preferences", http.StatusInternalServerError)
 		return
@@ -35,7 +35,7 @@ func GetPreferences(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(response)
 }
 
-func UpdatePreferences(w http.ResponseWriter, r *http.Request) {
+func UpdatePreferences(w http.ResponseWriter, r *http.Request, preferencesStorage *storage.RedisStorage) {
 	userID, ok := r.Context().Value(middleware.UserIDKey).(string)
 	if !ok {
 		http.Error(w, "User ID not found in token", http.StatusUnauthorized)
@@ -53,7 +53,7 @@ func UpdatePreferences(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err := storage.SavePreferences(userID, preferences)
+	err := preferencesStorage.SavePreferences(userID, preferences)
 	if err != nil {
 		http.Error(w, "Failed to update preferences", http.StatusInternalServerError)
 		return

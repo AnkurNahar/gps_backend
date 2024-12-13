@@ -12,7 +12,10 @@ import(
 )
 
 func main() {
-	storage.InitRedis()	
+	preferenceStorage, err := storage.NewRedisStorage("localhost:6379", "", 0)
+	if err != nil {
+		log.Fatalf("Failed to initialize Redis: %v", err)
+	}	
     router := mux.NewRouter()
 
 	// Routes
@@ -22,12 +25,16 @@ func main() {
 	protected := router.PathPrefix("/").Subrouter()
 	protected.Use(middleware.CheckAuthToken)
 	protected.HandleFunc("/devices", controllers.GetDevices).Methods("GET")
-	protected.HandleFunc("/preferences", controllers.GetPreferences).Methods("GET")
-	protected.HandleFunc("/preferences", controllers.UpdatePreferences).Methods("POST")
+	protected.HandleFunc("/preferences", func(w http.ResponseWriter, r *http.Request) {
+		controllers.GetPreferences(w, r, preferenceStorage)
+	}).Methods("GET")
+	protected.HandleFunc("/preferences", func(w http.ResponseWriter, r *http.Request) {
+		controllers.UpdatePreferences(w, r, preferenceStorage)
+	}).Methods("POST")
 
 	// CORS Middleware
 	corsHandler := cors.New(cors.Options{
-		AllowedOrigins:   []string{"http://localhost:3000"}, // Allow your frontend's origin
+		AllowedOrigins:   []string{"http://localhost:3000"}, 
 		AllowedMethods:   []string{"GET", "POST", "OPTIONS"},
 		AllowedHeaders:   []string{"Authorization", "Content-Type", "UserID"},
 		AllowCredentials: true,

@@ -4,31 +4,38 @@ import (
 	"context"
 	"encoding/json"
 	"log"
+
 	"github.com/go-redis/redis/v8"
-	
 	models "gps_backend/models"
 )
 
+type RedisStorage struct {
+	client *redis.Client
+	ctx    context.Context
+}
 
-var ctx = context.Background()
-var redisClient *redis.Client
-
-func InitRedis() { //redis connection
-	redisClient = redis.NewClient(&redis.Options{
-		Addr:     "localhost:6379",
-		Password: "", 
-		DB:       0,
+func NewRedisStorage(addr, password string, db int) (*RedisStorage, error) {
+	ctx := context.Background()
+	client := redis.NewClient(&redis.Options{
+		Addr:     addr,
+		Password: password,
+		DB:       db,
 	})
-	_, err := redisClient.Ping(ctx).Result()
+
+	_, err := client.Ping(ctx).Result()
 	if err != nil {
-		log.Fatalf("Failed to connect to Redis: %v", err)
+		return nil, err
 	}
 
 	log.Println("Connected to Redis")
+	return &RedisStorage{
+		client: client,
+		ctx:    ctx,
+	}, nil
 }
 
-func GetPreferences(userID string) (models.Preferences, error) {
-	val, err := redisClient.Get(ctx, userID).Result()
+func (r *RedisStorage) GetPreferences(userID string) (models.Preferences, error) {
+	val, err := r.client.Get(r.ctx, userID).Result()
 	if err == redis.Nil {
 		//default preferences
 		return models.Preferences{
@@ -45,11 +52,12 @@ func GetPreferences(userID string) (models.Preferences, error) {
 	return preferences, err
 }
 
-func SavePreferences(userID string, preferences models.Preferences) error {
+func (r *RedisStorage) SavePreferences(userID string, preferences models.Preferences) error {
+	//log.Println(preferences)
 	data, err := json.Marshal(preferences)
 	if err != nil {
 		return err
 	}
 
-	return redisClient.Set(ctx, userID, data, 0).Err()
+	return r.client.Set(r.ctx, userID, data, 0).Err()
 }
